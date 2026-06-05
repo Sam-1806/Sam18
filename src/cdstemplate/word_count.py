@@ -40,6 +40,7 @@ class CorpusCounter:
         """
         self.token_counter = Counter()
         self.doc_counter = 0
+        self.doc_token_sets = []
         self.tokenization_pattern = tokenization_pattern
         self.case_insensitive = case_insensitive
         logger.debug(
@@ -47,6 +48,7 @@ class CorpusCounter:
             tokenization_pattern,
             case_insensitive,
         )
+
 
     def add_tokenized_doc(self, token_list):
         """Tallies an already tokenized document in the corpus.
@@ -70,6 +72,10 @@ class CorpusCounter:
         )
 
         self.doc_counter += 1
+        if self.case_insensitive:
+            self.doc_token_sets.append(set(w.lower() for w in non_empty_tokens))
+        else:
+            self.doc_token_sets.append(set(non_empty_tokens))
 
     def add_doc(self, untokenized_doc):
         """Tokenizes a document and adds it in the corpus.
@@ -107,3 +113,16 @@ class CorpusCounter:
         """
         logger.info("Saving token counts to %s", csv_file)
         self.get_token_counts_as_dataframe().to_csv(csv_file, index=False, header=True)
+
+    def get_cooccurrence(self, word1, word2):
+        """Returns the number of documents in which both word1 and word2 appear.
+        :param word1: First token to check
+        :type word1: str
+        :param word2: Second token to check
+        :type word2: str
+        """
+        if self.case_insensitive:
+            word1, word2 = word1.lower(), word2.lower()
+        count = sum(1 for doc in self.doc_token_sets if word1 in doc and word2 in doc)
+        logger.info("Co-occurrence of '%s' and '%s': %s document(s)", word1, word2, count)
+        return count
