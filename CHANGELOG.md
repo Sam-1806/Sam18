@@ -13,6 +13,9 @@ You should also add project tags for each release in Github, see [Managing relea
 ### Changed
 - GitHub workflow for linting and formatting uses ruff as a separate job
 
+### Added
+- Added `get_cooccurrence(word1, word2)` method to `CorpusCounter` that returns the number of documents in which both words appear together
+
 ### Fixed
 - Fixed bug where only every other file was read instead of all files
 - Fixed Logging bug in `add_tokenize_docs` in `word_count.py`
