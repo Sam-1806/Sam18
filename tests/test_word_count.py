@@ -107,6 +107,7 @@ def test_corpus_counter_save_csv(tmp_path):
     expected_csv = "token,count\na,2\nb,1\nc,1\nx,1\ny,1\nz,1\n"
     assert my_csv.read_text() == expected_csv
 
+
 def test_cooccurrence_basic():
     cc = word_count.CorpusCounter()
     cc.add_doc("the cat sat on the mat")
@@ -116,14 +117,17 @@ def test_cooccurrence_basic():
     assert cc.get_cooccurrence("cat", "dog") == 1
     assert cc.get_cooccurrence("sat", "mat") == 2
 
+
 def test_cooccurrence_word_not_in_corpus():
     cc = word_count.CorpusCounter()
     cc.add_doc("the cat sat on the mat")
     assert cc.get_cooccurrence("cat", "elephant") == 0
 
+
 def test_cooccurrence_empty_corpus():
     cc = word_count.CorpusCounter()
     assert cc.get_cooccurrence("cat", "dog") == 0
+
 
 def test_cooccurrence_case_insensitive():
     cc = word_count.CorpusCounter(case_insensitive=True)

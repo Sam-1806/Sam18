@@ -49,7 +49,6 @@ class CorpusCounter:
             case_insensitive,
         )
 
-
     def add_tokenized_doc(self, token_list):
         """Tallies an already tokenized document in the corpus.
 
